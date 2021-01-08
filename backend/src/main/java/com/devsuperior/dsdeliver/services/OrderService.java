@@ -1,4 +1,5 @@
 package com.devsuperior.dsdeliver.services;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,17 +28,28 @@ public class OrderService {
 		return list.stream().map(x -> new OrderDTO(x)).collect(Collectors.toList());
 	}
 	@Transactional
+	
 	// metodo para inserir um novo pedido ja com associacoes aos metodos dele
 	// tabela produtoX ordem
 	public OrderDTO insert(OrderDTO dto) {
+
 		Order order = new Order(null,dto.getAddress(), dto.getLatitude(), dto.getLongitude(),
 				Instant.now(),OrderStatus.PENDING);
 		for (ProductDTO p : dto.getProducts()) {
 			Product product = productRepository.getOne(p.getId());
 			order.getProducts().add(product);
+		}	
 			order = repository.save(order);
 			return new OrderDTO(order);
+			
 }
-		return dto;
-}
+@Transactional 
+public OrderDTO setDelivered(Long id) {
+	Order order = repository.getOne(id);
+	order.setStatus(OrderStatus.DELIVERED);
+	order = repository.save(order);
+	return new OrderDTO(order);
+		
+	}
+
 }
