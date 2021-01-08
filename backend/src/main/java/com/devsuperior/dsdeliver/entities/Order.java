@@ -30,7 +30,7 @@ public class Order implements Serializable{
 	private Double latitude;
 	private Double longitude;
 	private Instant moment;
-	private OrderStatus status; 
+	private OrderStatus status;  
 	@ManyToMany
 	@JoinTable(name="tb_order_product",
 	     joinColumns = @JoinColumn(name="order_id"),
